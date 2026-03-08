@@ -1,0 +1,77 @@
+name: Submit a Skill
+description: Submit an Amazon seller tool or automation to be listed on SkillCrate
+title: "[Skill Submission]: "
+labels: ["skill-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a skill to SkillCrate! Fill out the details below and we'll review it for the catalog.
+
+  - type: input
+    id: skill-name
+    attributes:
+      label: Skill Name
+      description: What is the name of your tool or automation?
+      placeholder: e.g. Inventory Restock Planner
+    validations:
+      required: true
+
+  - type: input
+    id: repo-url
+    attributes:
+      label: GitHub Repository URL
+      description: Link to the public repo
+      placeholder: https://github.com/your-username/your-repo
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What area of Amazon selling does this cover?
+      options:
+        - Catalog Management
+        - Advertising / PPC
+        - Inventory / FBA
+        - Compliance / Account Health
+        - Analytics / Reporting
+        - Multi-Channel
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform / Type
+      description: What kind of tool is this?
+      multiple: true
+      options:
+        - CLI
+        - MCP Server
+        - Web App
+        - Python Script
+        - Claude Prompt / Tool
+        - Browser Automation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Brief description of what the skill does (2-3 sentences)
+      placeholder: Describe what problem it solves and how it works...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Anything else?
+      description: Any additional context, screenshots, or notes
+    validations:
+      required: false
