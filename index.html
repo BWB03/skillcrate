@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillCrate — Open-source skills for Amazon seller agents</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-void: #050508;
+    --bg-surface: #0c0c12;
+    --bg-raised: #111118;
+    --bg-card: #14141d;
+    --bg-card-hover: #1a1a26;
+    --border-subtle: #1e1e2e;
+    --border-mid: #2a2a3d;
+    --border-bright: #3a3a55;
+    --text-primary: #dcdce5;
+    --text-secondary: #7a7a95;
+    --text-dim: #4a4a62;
+    --mint: #34d399;
+    --mint-dim: rgba(52, 211, 153, 0.08);
+    --mint-glow: rgba(52, 211, 153, 0.15);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251, 191, 36, 0.08);
+    --sky: #38bdf8;
+    --sky-dim: rgba(56, 189, 248, 0.08);
+    --coral: #fb7185;
+    --coral-dim: rgba(251, 113, 133, 0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-void);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== NOISE TEXTURE ========== */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+
+  /* ========== NAV ========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 2.5rem;
+    background: rgba(5, 5, 8, 0.8);
+    backdrop-filter: blur(24px) saturate(1.2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 0.65rem;
+    text-decoration: none; color: var(--text-primary);
+  }
+  .nav-logo-mark {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--mint), #2dd4bf);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: #050508; font-weight: 800;
+    letter-spacing: -0.04em;
+    box-shadow: 0 0 20px var(--mint-dim);
+  }
+  .nav-logo-text {
+    font-weight: 700; font-size: 1.05rem;
+    letter-spacing: -0.02em;
+  }
+  .nav-right { display: flex; gap: 2rem; align-items: center; }
+  .nav-right a {
+    color: var(--text-dim); text-decoration: none; font-size: 0.85rem;
+    font-weight: 500; transition: color 0.2s; letter-spacing: 0.01em;
+  }
+  .nav-right a:hover { color: var(--text-secondary); }
+  .nav-gh {
+    background: var(--bg-raised) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-mid);
+    padding: 0.45rem 1rem; border-radius: 8px;
+    font-weight: 600 !important; font-size: 0.82rem !important;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: all 0.2s;
+  }
+  .nav-gh:hover { border-color: var(--border-bright); background: var(--bg-card) !important; }
+  .nav-gh svg { width: 16px; height: 16px; fill: var(--text-primary); }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+  }
+
+  /* Radial glow behind hero */
+  .hero-glow {
+    position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+    width: 1000px; height: 700px;
+    background: radial-gradient(ellipse 60% 50%, var(--mint-glow) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* Grid lines */
+  .hero-grid {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(var(--text-dim) 1px, transparent 1px),
+      linear-gradient(90deg, var(--text-dim) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 50% 60% at 50% 40%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 50% 60% at 50% 40%, black 20%, transparent 70%);
+  }
+
+  .hero-pill {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    padding: 0.4rem 1.1rem; border-radius: 100px;
+    font-size: 0.78rem; color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+  }
+  .hero-pill .blink {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 0 8px var(--mint-glow);
+    animation: blink 2.5s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-title {
+    position: relative;
+    font-size: clamp(3.2rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.8rem;
+    max-width: 800px;
+  }
+  .hero-title em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--mint);
+  }
+
+  .hero-desc {
+    position: relative;
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin-bottom: 2.8rem;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  .hero-buttons {
+    position: relative;
+    display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.8rem; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 600; text-decoration: none;
+    cursor: pointer; border: none; transition: all 0.2s;
+    letter-spacing: -0.01em;
+  }
+  .btn-mint {
+    background: var(--mint); color: #050508;
+    box-shadow: 0 0 30px var(--mint-dim);
+  }
+  .btn-mint:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 20px var(--mint-glow); }
+  .btn-ghost {
+    background: var(--bg-card); color: var(--text-primary);
+    border: 1px solid var(--border-mid);
+  }
+  .btn-ghost:hover { border-color: var(--border-bright); background: var(--bg-card-hover); transform: translateY(-1px); }
+
+  /* Stats strip */
+  .hero-stats {
+    position: relative;
+    display: flex; gap: 3.5rem; justify-content: center;
+    margin-top: 4.5rem; padding-top: 2.5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .hero-stat-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--mint);
+  }
+  .hero-stat-label {
+    font-size: 0.75rem; color: var(--text-dim);
+    margin-top: 0.15rem; letter-spacing: 0.04em;
+    text-transform: uppercase; font-weight: 500;
+  }
+
+  /* ========== SHARED SECTION ========== */
+  .section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--mint);
+    text-transform: uppercase; letter-spacing: 0.18em;
+    margin-bottom: 0.9rem; font-weight: 500;
+  }
+  .section h2 {
+    font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em;
+    margin-bottom: 0.8rem; line-height: 1.1;
+  }
+  .section h2 em {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 400;
+  }
+  .section-sub {
+    color: var(--text-secondary); font-size: 1.05rem;
+    max-width: 550px; margin-bottom: 3rem; line-height: 1.7;
+  }
+
+  /* ========== SKILL CARDS ========== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px; padding: 1.6rem;
+    text-decoration: none; color: inherit; display: block;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+  }
+  .card:hover {
+    border-color: var(--border-mid);
+    background: var(--bg-card-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .card-featured {
+    border-color: rgba(52, 211, 153, 0.25);
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    column-gap: 1.6rem;
+  }
+  .card-featured .card-top { grid-column: 1 / -1; }
+  .card-featured .card-name { font-size: 1.25rem; grid-column: 1 / -1; }
+  .card-featured .card-desc { grid-column: 1 / -1; max-width: 720px; }
+  .card-featured .card-tags { grid-column: 1 / -1; }
+  .card-featured:hover {
+    border-color: rgba(52, 211, 153, 0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 30px var(--mint-dim);
+  }
+  .card-badge-featured {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; padding: 0.2rem 0.55rem; border-radius: 100px;
+    background: var(--mint-dim); color: var(--mint);
+    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .coming-soon-banner {
+    grid-column: 1 / -1;
+    background: var(--bg-card);
+    border: 1px dashed var(--border-mid);
+    border-radius: 14px; padding: 2.5rem;
+    text-align: center;
+  }
+  .coming-soon-banner h3 {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .coming-soon-banner p {
+    font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;
+    max-width: 420px; margin: 0 auto;
+  }
+  .card-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+  .card-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .card-icon.mint { background: var(--mint-dim); color: var(--mint); }
+  .card-icon.amber { background: var(--amber-dim); color: var(--amber); }
+  .card-icon.sky { background: var(--sky-dim); color: var(--sky); }
+  .card-icon.coral { background: var(--coral-dim); color: var(--coral); }
+  .card-soon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; padding: 0.2rem 0.55rem; border-radius: 100px;
+    background: var(--amber-dim); color: var(--amber);
+    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .card-name {
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 0.45rem;
+    letter-spacing: -0.01em;
+  }
+  .card-desc {
+    font-size: 0.85rem; color: var(--text-secondary);
+    line-height: 1.6; margin-bottom: 1.1rem;
+  }
+  .card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; padding: 0.2rem 0.55rem;
+    border-radius: 5px; background: var(--bg-void);
+    color: var(--text-dim); border: 1px solid var(--border-subtle);
+    letter-spacing: 0.02em;
+  }
+  .tag.plat {
+    color: var(--mint); border-color: rgba(52, 211, 153, 0.2);
+    background: var(--mint-dim);
+  }
+
+  /* Platform row */
+  .platforms {
+    display: flex; gap: 1.2rem; margin-top: 3rem; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .plat-badge {
+    display: flex; align-items: center; gap: 0.7rem;
+    background: var(--bg-raised); border: 1px solid var(--border-subtle);
+    padding: 0.75rem 1.3rem; border-radius: 12px;
+  }
+  .plat-mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 700;
+  }
+  .plat-mark.oc { background: var(--mint-dim); color: var(--mint); }
+  .plat-mark.cl { background: var(--amber-dim); color: var(--amber); }
+  .plat-info-name { font-weight: 600; font-size: 0.92rem; }
+  .plat-info-type { font-size: 0.72rem; color: var(--text-dim); }
+
+  /* ========== STEPS ========== */
+  .steps-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem;
+  }
+  .step-card {
+    background: var(--bg-card); border: 1px solid var(--border-subtle);
+    border-radius: 14px; padding: 2rem;
+    position: relative;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; color: var(--mint);
+    font-weight: 700; margin-bottom: 1.2rem;
+    letter-spacing: 0.06em;
+  }
+  .step-card h3 {
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+  }
+  .step-card p {
+    font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65;
+  }
+  .step-card code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; background: var(--bg-void);
+    padding: 0.12rem 0.45rem; border-radius: 4px;
+    color: var(--mint); border: 1px solid var(--border-subtle);
+  }
+
+  /* connector lines between steps */
+  .step-card:not(:last-child)::after {
+    content: '';
+    position: absolute; top: 50%; right: -0.7rem;
+    width: 1.2rem; height: 1px;
+    background: var(--border-mid);
+  }
+
+  /* ========== CTA BOX ========== */
+  .cta-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px; padding: 4rem 3rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, var(--mint-glow) 0%, transparent 70%);
+    pointer-events: none; opacity: 0.3;
+  }
+  .cta-box > * { position: relative; }
+  .cta-box p {
+    color: var(--text-secondary); max-width: 480px;
+    margin: 0.9rem auto 2.2rem; font-size: 1.05rem; line-height: 1.7;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    max-width: 1100px; margin: 0 auto;
+    font-size: 0.78rem; color: var(--text-dim);
+  }
+  footer a { color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--text-primary); }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    nav { padding: 0.8rem 1.2rem; }
+    .nav-right a:not(.nav-gh) { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-stats { flex-direction: column; gap: 1.5rem; }
+    .section { padding: 4rem 1.5rem; }
+    .steps-row { grid-template-columns: 1fr; }
+    .step-card::after { display: none; }
+    .grid { grid-template-columns: 1fr; }
+    .card-featured { grid-column: 1; grid-template-columns: 1fr; }
+    .cta-box { padding: 2.5rem 1.5rem; }
+  }
+
+  /* ========== ENTRANCE ANIMATIONS ========== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-pill { animation: fadeUp 0.6s ease-out 0.1s both; }
+  .hero-title { animation: fadeUp 0.6s ease-out 0.2s both; }
+  .hero-desc { animation: fadeUp 0.6s ease-out 0.3s both; }
+  .hero-buttons { animation: fadeUp 0.6s ease-out 0.4s both; }
+  .hero-stats { animation: fadeUp 0.6s ease-out 0.55s both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-mark">SC</span>
+    <span class="nav-logo-text">SkillCrate</span>
+  </a>
+  <div class="nav-right">
+    <a href="#skills">Skills</a>
+    <a href="#how">How it works</a>
+    <a href="#contribute">Contribute</a>
+    <a href="https://github.com/BWB03" class="nav-gh">
+      <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-pill">
+    <span class="blink"></span>
+    100% free &amp; open source
+  </div>
+
+  <h1 class="hero-title">
+    SkillCrate<br>
+    <em>Skills for seller agents.</em>
+  </h1>
+
+  <p class="hero-desc">
+    The first open-source marketplace for Amazon seller agent skills.
+    Find, install, and share modular capabilities for OpenClaw, Claude, and more.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="#skills" class="btn btn-mint">Browse Skills ↓</a>
+    <a href="https://github.com/BWB03" class="btn btn-ghost">★ Star on GitHub</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-val">3</div>
+      <div class="hero-stat-label">Skills</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">2</div>
+      <div class="hero-stat-label">Platforms</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">$0</div>
+      <div class="hero-stat-label">Always free</div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS CATALOG -->
+<div class="section" id="skills">
+  <div class="section-tag">// available skills</div>
+  <h2>Browse the <em>catalog</em></h2>
+  <p class="section-sub">
+    Each skill is a standalone GitHub repo. Clone it, plug it into your agent, go.
+  </p>
+
+  <div class="grid">
+
+    <a href="https://github.com/BWB03/amazon-catalog-cli" target="_blank" class="card card-featured">
+      <div class="card-top">
+        <div class="card-icon mint">⌕</div>
+        <span class="card-badge-featured">Featured</span>
+      </div>
+      <div class="card-name">Amazon Catalog CLI</div>
+      <div class="card-desc">Agent-native Amazon catalog auditing tool. Query CLRs with structured input, run 12 built-in health checks, RUFUS bullet scoring, and integrate via MCP server. Supports JSON/NDJSON output, field masks, pagination, and schema introspection.</div>
+      <div class="card-tags">
+        <span class="tag plat">CLI</span>
+        <span class="tag plat">MCP</span>
+        <span class="tag plat">Claude</span>
+        <span class="tag">catalog</span>
+        <span class="tag">compliance</span>
+        <span class="tag">rufus</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/BWB03/inventory-dashboard" target="_blank" class="card">
+      <div class="card-top">
+        <div class="card-icon amber">≡</div>
+      </div>
+      <div class="card-name">Inventory Dashboard</div>
+      <div class="card-desc">Client-side Amazon FBA &amp; AWD inventory dashboard. Upload CSV reports from Seller Central to visualize inventory distribution, top products, and days-of-supply status — all in your browser, no backend required.</div>
+      <div class="card-tags">
+        <span class="tag plat">Web App</span>
+        <span class="tag">inventory</span>
+        <span class="tag">fba</span>
+        <span class="tag">awd</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/BWB03/amazon-ads-sku-migration" target="_blank" class="card">
+      <div class="card-top">
+        <div class="card-icon sky">▲</div>
+      </div>
+      <div class="card-name">Ads SKU Migration</div>
+      <div class="card-desc">Bulk migrate SKUs across Amazon Advertising campaigns when transitioning barcode types. Handles Sponsored Products and Sponsored Display, outputs upload-ready bulk sheets with test-file support.</div>
+      <div class="card-tags">
+        <span class="tag plat">Python</span>
+        <span class="tag">advertising</span>
+        <span class="tag">migration</span>
+      </div>
+    </a>
+
+    <div class="coming-soon-banner">
+      <h3>More skills coming soon</h3>
+      <p>We're building out the catalog. Have a tool that automates part of your Amazon workflow? Submit it below.</p>
+    </div>
+
+  </div>
+
+  <!-- Platform badges -->
+  <div class="platforms">
+    <div class="plat-badge">
+      <div class="plat-mark oc">OC</div>
+      <div>
+        <div class="plat-info-name">OpenClaw</div>
+        <div class="plat-info-type">Browser automation agent</div>
+      </div>
+    </div>
+    <div class="plat-badge">
+      <div class="plat-mark cl">C</div>
+      <div>
+        <div class="plat-info-name">Claude</div>
+        <div class="plat-info-type">System prompts + tools</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <div class="section-tag">// how it works</div>
+  <h2>Three steps. <em>Zero cost.</em></h2>
+  <p class="section-sub">
+    Skills are just GitHub repos with a standardized structure. No vendor lock-in, no API keys, no subscriptions.
+  </p>
+
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h3>Find a skill</h3>
+      <p>Browse the catalog or search by category — advertising, catalog management, inventory, compliance, and more.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h3>Clone &amp; configure</h3>
+      <p>Each skill repo includes a <code>SKILL.md</code> with setup instructions for your agent platform of choice.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h3>Run it</h3>
+      <p>Load the skill into your agent and let it work. Customize anything — it's all open source, MIT licensed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTRIBUTE -->
+<div class="section" id="contribute">
+  <div class="cta-box">
+    <div class="section-tag">// build with us</div>
+    <h2>Share your <em>skills</em></h2>
+    <p>
+      Built an automation for your Amazon workflow?
+      Package it as a SkillCrate skill and help the whole community level up.
+    </p>
+    <a href="https://github.com/BWB03/skillcrate/issues/new?template=submit-a-skill.yml" target="_blank" class="btn btn-mint">Submit a Skill →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  SkillCrate is open source under MIT License &nbsp;·&nbsp;
+  Built by <a href="https://voartex.com" target="_blank">Voartex</a> &nbsp;·&nbsp;
+  <a href="https://github.com/BWB03">GitHub</a>
+</footer>
+
+</body>
+</html>
