@@ -9,6 +9,7 @@ Find, install, and share modular tools and automations for Amazon selling workfl
 | Skill | Description | Type |
 |-------|-------------|------|
 | [Amazon Catalog CLI](https://github.com/BWB03/amazon-catalog-cli) | Agent-native catalog auditing tool with MCP server, 12 health checks, and RUFUS scoring | CLI, MCP |
+| [Keepa Adapter](https://github.com/BWB03/keepa-adapter) | Amazon product monitoring — prices, BSR trends, buy box, variation tracking, promo impact analysis | MCP, OpenClaw `NEW` |
 | [Inventory Dashboard](https://github.com/BWB03/inventory-dashboard) | Client-side FBA & AWD inventory visualization from CSV reports | Web App |
 | [Ads SKU Migration](https://github.com/BWB03/amazon-ads-sku-migration) | Bulk migrate SKUs across SP & SD campaigns during barcode transitions | Python |
 
