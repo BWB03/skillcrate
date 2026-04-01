@@ -12,6 +12,7 @@ Find, install, and share modular tools and automations for Amazon selling workfl
 | [Keepa Adapter](https://github.com/BWB03/keepa-adapter) | Amazon product monitoring — prices, BSR trends, buy box, variation tracking, promo impact analysis | MCP, OpenClaw `NEW` |
 | [Inventory Dashboard](https://github.com/BWB03/inventory-dashboard) | Client-side FBA & AWD inventory visualization from CSV reports | Web App |
 | [Ads SKU Migration](https://github.com/BWB03/amazon-ads-sku-migration) | Bulk migrate SKUs across SP & SD campaigns during barcode transitions | Python |
+| [Amazon Ads](https://github.com/MarketplaceAdPros/skill-amazon-ads) | Manage and optimize Amazon Advertising campaigns via Marketplace Ad Pros MCP server | MCP |
 
 ## Submit a Skill
 
