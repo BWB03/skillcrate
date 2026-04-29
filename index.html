@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkillCrate — Open-source skills for Amazon seller agents</title>
+<meta name="description" content="The skill marketplace where AI agents are the user. Open-source, MCP-native skills for Amazon sellers — built for OpenClaw, Claude, and any agent runtime.">
+<title>SkillCrate — Agent-native skills for Amazon sellers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600;700;800;900&family=Instrument+Serif&display=swap" rel="stylesheet">
 <style>
@@ -234,6 +235,12 @@
   .section-sub {
     color: var(--text-secondary); font-size: 1.05rem;
     max-width: 550px; margin-bottom: 3rem; line-height: 1.7;
+  }
+  .section-sub code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em; background: var(--bg-void);
+    padding: 0.12rem 0.45rem; border-radius: 4px;
+    color: var(--mint); border: 1px solid var(--border-subtle);
   }
 
   /* ========== SKILL CARDS ========== */
@@ -488,13 +495,12 @@
   </div>
 
   <h1 class="hero-title">
-    SkillCrate<br>
-    <em>Skills for seller agents.</em>
+    The skill marketplace where AI agents are <em>the user</em>.
   </h1>
 
   <p class="hero-desc">
-    The first open-source marketplace for Amazon seller agent skills.
-    Find, install, and share modular capabilities for OpenClaw, Claude, and more.
+    Amazon's tools were built for humans clicking buttons.
+    SkillCrate rebuilds them for agents — open-source, MCP-native, and ready to plug into OpenClaw, Claude, or any agent runtime.
   </p>
 
   <div class="hero-buttons">
@@ -508,7 +514,7 @@
 
   <div class="hero-stats">
     <div>
-      <div class="hero-stat-val">7</div>
+      <div class="hero-stat-val">5</div>
       <div class="hero-stat-label">Skills</div>
     </div>
     <div>
@@ -518,6 +524,33 @@
     <div>
       <div class="hero-stat-val">$0</div>
       <div class="hero-stat-label">Always free</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY AGENT-NATIVE -->
+<div class="section" id="why">
+  <div class="section-tag">// why agent-native</div>
+  <h2>Built for agents, <em>not retrofitted</em>.</h2>
+  <p class="section-sub">
+    The next trillion users on the internet won't be people. They'll be agents — and they need software designed for them, not scraped from human UIs.
+  </p>
+
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num">// I/O</div>
+      <h3>Structured, not scraped</h3>
+      <p>Every skill exposes JSON schemas, field masks, and pagination. Agents call them; they don't click them.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">// MCP</div>
+      <h3>One standard interface</h3>
+      <p>Skills ship as MCP servers. Any MCP-compatible agent — OpenClaw, Claude, anything else — can use them on day one.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">// OSS</div>
+      <h3>No lock-in</h3>
+      <p>Each skill is a GitHub repo with a <code>SKILL.md</code> manifest. Clone it, fork it, run it locally.</p>
     </div>
   </div>
 </div>
@@ -538,7 +571,7 @@
         <span class="card-badge-featured">Featured</span>
       </div>
       <div class="card-name">Amazon Catalog CLI</div>
-      <div class="card-desc">Agent-native Amazon catalog auditing tool. Query CLRs with structured input, run 12 built-in health checks, RUFUS bullet scoring, and integrate via MCP server. Supports JSON/NDJSON output, field masks, pagination, and schema introspection.</div>
+      <div class="card-desc">Agent-native Amazon catalog auditing. 12 built-in health checks, RUFUS bullet scoring, and an MCP server with JSON/NDJSON output, field masks, pagination, and schema introspection.</div>
       <div class="card-tags">
         <span class="tag plat">CLI</span>
         <span class="tag plat">MCP</span>
@@ -554,7 +587,7 @@
         <div class="card-icon mint">◉</div>
       </div>
       <div class="card-name">Keepa Adapter</div>
-      <div class="card-desc">Amazon product monitoring via Keepa API. Track prices, BSR trends, buy box changes, variation families, and promo impact for 100+ ASINs. 13 MCP tools with SQLite storage, change detection, and a daily collection scheduler.</div>
+      <div class="card-desc">Agent-native product monitoring via Keepa. 13 MCP tools for prices, BSR trends, buy box changes, variation families, and promo impact across 100+ ASINs — with SQLite storage, change detection, and a daily collection scheduler.</div>
       <div class="card-tags">
         <span class="tag plat">MCP</span>
         <span class="tag plat">OpenClaw</span>
@@ -570,7 +603,7 @@
         <div class="card-icon coral">&#9830;</div>
       </div>
       <div class="card-name">DataDive Adapter</div>
-      <div class="card-desc">Universal adapter for DataDive Amazon analytics. 13 tools for keyword research, competitor intelligence, rank tracking, niche dives, and AI copywriting — all normalized into a standardized agent-readable schema.</div>
+      <div class="card-desc">Agent-native keyword and rank intelligence. 13 tools for keyword research, competitor analysis, rank tracking, niche dives, and AI copywriting — all normalized into a standardized agent-readable schema.</div>
       <div class="card-tags">
         <span class="tag plat">MCP</span>
         <span class="tag plat">OpenClaw</span>
@@ -588,7 +621,7 @@
         <span class="card-badge-new">New</span>
       </div>
       <div class="card-name">SmartScout Adapter</div>
-      <div class="card-desc">Standalone MCP server for the official SmartScout API. 13 tools covering brand search, market share, sellers, product history, subcategory analysis, search term research, and sales estimates — all returned in a consistent agent-readable envelope.</div>
+      <div class="card-desc">Agent-native brand and market intel via the official SmartScout API. 13 tools covering brand search, market share, sellers, product history, subcategory analysis, search-term research, and sales estimates — all returned in a consistent agent-readable envelope.</div>
       <div class="card-tags">
         <span class="tag plat">MCP</span>
         <span class="tag plat">OpenClaw</span>
@@ -599,40 +632,13 @@
       </div>
     </a>
 
-    <a href="https://github.com/BWB03/inventory-dashboard" target="_blank" class="card">
-      <div class="card-top">
-        <div class="card-icon amber">≡</div>
-      </div>
-      <div class="card-name">Inventory Dashboard</div>
-      <div class="card-desc">Client-side Amazon FBA &amp; AWD inventory dashboard. Upload CSV reports from Seller Central to visualize inventory distribution, top products, and days-of-supply status — all in your browser, no backend required.</div>
-      <div class="card-tags">
-        <span class="tag plat">Web App</span>
-        <span class="tag">inventory</span>
-        <span class="tag">fba</span>
-        <span class="tag">awd</span>
-      </div>
-    </a>
-
-    <a href="https://github.com/BWB03/amazon-ads-sku-migration" target="_blank" class="card">
-      <div class="card-top">
-        <div class="card-icon sky">▲</div>
-      </div>
-      <div class="card-name">Ads SKU Migration</div>
-      <div class="card-desc">Bulk migrate SKUs across Amazon Advertising campaigns when transitioning barcode types. Handles Sponsored Products and Sponsored Display, outputs upload-ready bulk sheets with test-file support.</div>
-      <div class="card-tags">
-        <span class="tag plat">Python</span>
-        <span class="tag">advertising</span>
-        <span class="tag">migration</span>
-      </div>
-    </a>
-
     <a href="https://github.com/MarketplaceAdPros/skill-amazon-ads" target="_blank" class="card">
       <div class="card-top">
         <div class="card-icon sky">▶</div>
         <span class="card-badge-new">New</span>
       </div>
       <div class="card-name">Amazon Ads</div>
-      <div class="card-desc">Manage and optimize Amazon Advertising campaigns via the Marketplace Ad Pros MCP server. Browse campaigns, analyze performance reports, get bid and budget recommendations, discover keyword opportunities, and manage targeting changes.</div>
+      <div class="card-desc">Agent-native Amazon Advertising via the Marketplace Ad Pros MCP. Browse campaigns, analyze performance reports, get bid and budget recommendations, discover keyword opportunities, and manage targeting changes.</div>
       <div class="card-tags">
         <span class="tag plat">MCP</span>
         <span class="tag plat">Claude</span>
@@ -671,9 +677,9 @@
 <!-- HOW IT WORKS -->
 <div class="section" id="how">
   <div class="section-tag">// how it works</div>
-  <h2>Three steps. <em>Zero cost.</em></h2>
+  <h2>One manifest. <em>Any agent.</em></h2>
   <p class="section-sub">
-    Skills are just GitHub repos with a standardized structure. No vendor lock-in, no API keys, no subscriptions.
+    Every skill ships with a <code>SKILL.md</code> — a standardized manifest that tells the agent what the skill does, how to call it, and what to expect back. No vendor SDKs, no proprietary runtime, no subscriptions.
   </p>
 
   <div class="steps-row">
@@ -699,10 +705,10 @@
 <div class="section" id="contribute">
   <div class="cta-box">
     <div class="section-tag">// build with us</div>
-    <h2>Share your <em>skills</em></h2>
+    <h2>Built something agents <em>should</em> be using?</h2>
     <p>
-      Built an automation for your Amazon workflow?
-      Package it as a SkillCrate skill and help the whole community level up.
+      If you've automated a piece of your Amazon workflow, package it as a SkillCrate skill.
+      Open the door for every agent operator after you.
     </p>
     <a href="https://github.com/BWB03/skillcrate/issues/new?template=submit-a-skill.yml" target="_blank" class="btn btn-mint">Submit a Skill →</a>
   </div>
