@@ -346,6 +346,27 @@
     color: var(--mint); border-color: rgba(52, 211, 153, 0.2);
     background: var(--mint-dim);
   }
+  .card-actions {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .card-action {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.55rem 0.85rem; border-radius: 8px;
+    font-size: 0.78rem; font-weight: 700; text-decoration: none;
+    transition: all 0.2s; border: 1px solid var(--border-mid);
+  }
+  .card-action.primary {
+    background: var(--mint); color: #050508; border-color: var(--mint);
+    box-shadow: 0 0 18px var(--mint-dim);
+  }
+  .card-action.secondary {
+    background: var(--bg-void); color: var(--text-primary);
+  }
+  .card-action:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-bright);
+  }
 
   /* Platform row */
   .platforms {
@@ -615,7 +636,7 @@
       </div>
     </a>
 
-    <a href="https://github.com/BWB03/smartscout-adapter" target="_blank" class="card">
+    <article class="card">
       <div class="card-top">
         <div class="card-icon coral">◎</div>
         <span class="card-badge-new">New</span>
@@ -630,7 +651,11 @@
         <span class="tag">market-intel</span>
         <span class="tag">smartscout</span>
       </div>
-    </a>
+      <div class="card-actions">
+        <a href="https://github.com/BWB03/smartscout-adapter/releases/latest/download/smartscout-adapter-v1.1.1.mcpb" class="card-action primary" download>Download MCPB</a>
+        <a href="https://github.com/BWB03/smartscout-adapter" target="_blank" class="card-action secondary">View repo</a>
+      </div>
+    </article>
 
     <a href="https://github.com/MarketplaceAdPros/skill-amazon-ads" target="_blank" class="card">
       <div class="card-top">
